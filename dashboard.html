@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AquaLabel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container" style="padding-top: 2rem;">
+        <div class="dashboard-header">
+            <h1 id="welcome-msg">Welcome Back!</h1>
+            <p style="color: var(--text-muted);">Here's what's happening with your designs.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="stat-created">0</div>
+                    <div class="stat-label">Total Designs Created</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <div class="stat-value" id="stat-printed">0</div>
+                    <div class="stat-label">Labels Printed</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Quick Actions</h2>
+        <div class="dashboard-actions">
+            <a href="design.html" class="action-card">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">+</div>
+                <h3>Create New Label</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Start a fresh design from scratch</p>
+            </a>
+            <a href="saved-designs.html" class="action-card">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">📁</div>
+                <h3>Saved Designs</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">View and edit your previous work</p>
+            </a>
+            <a href="community.html" class="action-card">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">🌍</div>
+                <h3>Community Inspiration</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">See what others are creating</p>
+            </a>
+             <a href="profile.html" class="action-card">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">👤</div>
+                <h3>My Profile</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Manage your account details</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = window.App.Data.getUser();
+            if (user) {
+                document.getElementById('welcome-msg').textContent = `Welcome, ${user.name}!`;
+                document.getElementById('stat-created').textContent = user.stats.created;
+                document.getElementById('stat-printed').textContent = user.stats.printed;
+            }
+        });
+    </script>
+</body>
+</html>
