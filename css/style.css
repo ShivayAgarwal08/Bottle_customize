@@ -18,14 +18,40 @@
   --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
+[data-theme="dark"] {
+  --bg-body: #0f172a;
+  --bg-surface: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .fade-in {
@@ -46,6 +72,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -54,9 +81,15 @@ a {
 }
 
 /* Custom Cursors */
-.cursor-nwse { cursor: nwse-resize; }
-.cursor-nesw { cursor: nesw-resize; }
-.cursor-move { cursor: move; }
+.cursor-nwse {
+  cursor: nwse-resize;
+}
+.cursor-nesw {
+  cursor: nesw-resize;
+}
+.cursor-move {
+  cursor: move;
+}
 
 ul {
   list-style: none;
@@ -233,15 +266,22 @@ img {
 }
 
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.05) 0%, transparent 20%);
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(37, 99, 235, 0.05) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(37, 99, 235, 0.05) 0%,
+      transparent 20%
+    );
   z-index: 0;
   pointer-events: none;
 }
@@ -446,7 +486,8 @@ canvas {
 }
 .design-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .design-preview {
@@ -473,7 +514,6 @@ canvas {
   gap: 0.5rem;
 }
 
-
 /* Toast Notifications */
 .toast-container {
   position: fixed;
@@ -499,9 +539,15 @@ canvas {
   border: 1px solid var(--border);
 }
 
-.toast.success { border-left-color: #10b981; }
-.toast.error { border-left-color: #ef4444; }
-.toast.info { border-left-color: var(--primary); }
+.toast.success {
+  border-left-color: #10b981;
+}
+.toast.error {
+  border-left-color: #ef4444;
+}
+.toast.info {
+  border-left-color: var(--primary);
+}
 
 .toast-content {
   flex: 1;
@@ -520,84 +566,90 @@ canvas {
 
 /* 3D Bottle Mockup Modal */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    animation: fadeIn 0.2s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-    background: white;
-    padding: 2rem;
-    border-radius: var(--radius);
-    max-width: 90%;
-    width: 500px;
-    text-align: center;
-    position: relative;
-    box-shadow: var(--shadow-lg);
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius);
+  max-width: 90%;
+  width: 500px;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-lg);
 }
 
 .bottle-container {
-    width: 200px;
-    height: 500px;
-    background: #e2e8f0;
-    margin: 0 auto 2rem;
-    border-radius: 20px 20px 10px 10px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: inset -20px 0 30px rgba(0,0,0,0.1), inset 20px 0 30px rgba(255,255,255,0.5);
-    /* Simple bottle shape css */
+  width: 200px;
+  height: 500px;
+  background: #e2e8f0;
+  margin: 0 auto 2rem;
+  border-radius: 20px 20px 10px 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset -20px 0 30px rgba(0, 0, 0, 0.1),
+    inset 20px 0 30px rgba(255, 255, 255, 0.5);
+  /* Simple bottle shape css */
 }
 
 /* The cap */
 .bottle-container::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50px;
-    width: 100px;
-    height: 40px;
-    background: #334155;
-    z-index: 10;
-    border-radius: 5px;
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50px;
+  width: 100px;
+  height: 40px;
+  background: #334155;
+  z-index: 10;
+  border-radius: 5px;
 }
 
 /* The Label Wrap */
 .bottle-label-wrap {
-    position: absolute;
-    top: 150px;
-    left: -50px; /* Wider than bottle to simulate wrap if we want, or just fit */
-    width: 300px;
-    height: 150px;
-    /* Masking to bottle width */
-    left: 0;
-    width: 100%;
-    
-    background-size: cover;
-    background-position: center;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2); /* Shadow for roundness */
-    mix-blend-mode: multiply; /* Helps blend with bottle shading */
-    opacity: 0.9;
+  position: absolute;
+  top: 150px;
+  left: -50px; /* Wider than bottle to simulate wrap if we want, or just fit */
+  width: 300px;
+  height: 150px;
+  /* Masking to bottle width */
+  left: 0;
+  width: 100%;
+
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2); /* Shadow for roundness */
+  mix-blend-mode: multiply; /* Helps blend with bottle shading */
+  opacity: 0.9;
 }
 
 /* Glossy reflection overlay */
 .bottle-highlight {
-    position: absolute;
-    top: 0;
-    left: 40px;
-    width: 20px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.4), rgba(255,255,255,0.1));
-    z-index: 5;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
+  z-index: 5;
+  pointer-events: none;
 }
 
 /* Responsive Design */
@@ -605,19 +657,19 @@ canvas {
   .hero h1 {
     font-size: 2.5rem;
   }
-  
+
   .nav-links {
     display: none; /* Simplification for prototype */
   }
-  
+
   /* Mobile approach: Simplistic hamburger placeholder */
   .nav-container::after {
-    content: '☰';
+    content: "☰";
     font-size: 1.5rem;
     cursor: pointer;
     display: block;
   }
-  
+
   .editor-container {
     display: flex;
     flex-direction: column;
@@ -625,24 +677,24 @@ canvas {
   }
 
   .canvas-area {
-      height: 40vh; /* Fixed height for mobile canvas area */
-      width: 100%;
-      background: #e2e8f0;
+    height: 40vh; /* Fixed height for mobile canvas area */
+    width: 100%;
+    background: #e2e8f0;
   }
 
   .toolbar {
-      order: 2; 
-      max-height: none;
-      overflow: visible;
+    order: 2;
+    max-height: none;
+    overflow: visible;
   }
-  
+
   /* Make canvas scale visually */
   canvas {
-      max-width: 90%;
-      max-height: 90%;
+    max-width: 90%;
+    max-height: 90%;
   }
 
   .stats-grid {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
