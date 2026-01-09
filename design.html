@@ -103,5 +103,16 @@
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
     <script src="js/editor.js"></script>
+    <!-- 3D Preview Modal -->
+    <div id="preview-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">Live Preview</h2>
+            <div class="bottle-container">
+                <div class="bottle-highlight"></div>
+                <div id="bottle-label" class="bottle-label-wrap"></div>
+            </div>
+            <button class="btn btn-outline" onclick="document.getElementById('preview-modal').style.display='none'">Close Preview</button>
+        </div>
+    </div>
 </body>
 </html>
