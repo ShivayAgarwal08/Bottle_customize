@@ -137,6 +137,7 @@ img {
   border: none;
   font-size: 1rem;
 }
+.btn-primary {
   background: var(--gradient-primary);
   color: white;
   border: none;
@@ -173,12 +174,15 @@ img {
 
 /* Navbar */
 .navbar {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
   padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-container {
@@ -190,11 +194,16 @@ img {
 .logo {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--primary);
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+
+
 
 .nav-links {
   display: flex;
@@ -205,11 +214,28 @@ img {
   font-weight: 500;
   color: var(--text-muted);
   transition: var(--transition);
+  position: relative;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--primary);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background: var(--gradient-primary);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
 }
 
 /* Auth Pages */
@@ -223,48 +249,54 @@ img {
 
 .auth-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  padding: 2.5rem;
-  border-radius: var(--radius);
-  box-shadow: var(--glass-shadow);
+  padding: 3rem;
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   text-align: center;
   animation: fadeIn 0.5s ease-out;
 }
 
 .auth-card h2 {
   margin-bottom: 0.5rem;
-  color: var(--primary);
+  color: var(--text-main);
+  font-weight: 800;
+  font-size: 1.8rem;
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9rem;
+  color: var(--text-main);
 }
 
 .form-group input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border);
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   font-size: 1rem;
+  background: rgba(255, 255, 255, 0.5);
   transition: var(--transition);
+  color: var(--text-main);
 }
 
 .form-group input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: var(--bg-surface);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
 }
 
 .auth-footer {
