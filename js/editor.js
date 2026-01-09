@@ -100,6 +100,37 @@ class LabelEditor {
         };
     }
 
+    addShape(type) {
+        let el = {
+            type: type,
+            color: '#2563eb', // Default blue
+            x: this.canvas.width / 2 - 50,
+            y: this.canvas.height / 2 - 50,
+            width: 100,
+            height: 100
+        };
+        this.elements.push(el);
+        this.render();
+        this.saveState();
+        window.App.showToast(`${type} added`, 'success');
+    }
+
+    moveLayer(direction) {
+        if (!this.selectedElement) return;
+        
+        const idx = this.elements.indexOf(this.selectedElement);
+        if (idx === -1) return;
+
+        if (direction === 'up' && idx < this.elements.length - 1) {
+            [this.elements[idx], this.elements[idx+1]] = [this.elements[idx+1], this.elements[idx]];
+        } else if (direction === 'down' && idx > 0) {
+            [this.elements[idx], this.elements[idx-1]] = [this.elements[idx-1], this.elements[idx]];
+        }
+        
+        this.render();
+        this.saveState();
+    }
+
     deleteSelected() {
         if (!this.selectedElement) return;
         this.elements = this.elements.filter(el => el !== this.selectedElement);
@@ -121,11 +152,11 @@ class LabelEditor {
     }
 
     updateUI() {
-        const delBtn = document.getElementById('delete-el-btn');
+        const tools = document.getElementById('selection-tools');
         if (this.selectedElement) {
-            delBtn.style.display = 'block';
+            tools.style.display = 'block';
         } else {
-            delBtn.style.display = 'none';
+            tools.style.display = 'none';
         }
     }
 
@@ -184,6 +215,27 @@ class LabelEditor {
         this.canvas.addEventListener('touchstart', (e) => touchHandler('mousedown', e));
         this.canvas.addEventListener('touchmove', (e) => { e.preventDefault(); touchHandler('mousemove', e); });
         this.canvas.addEventListener('touchend', (e) => touchHandler('mouseup', e));
+
+        // External Drop Support
+        const container = document.querySelector('.canvas-area');
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            container.style.background = '#cbd5e1';
+        });
+        container.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            container.style.background = '#e2e8f0';
+        });
+        container.addEventListener('drop', (e) => {
+            e.preventDefault();
+            container.style.background = '#e2e8f0';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => this.addImage(event.target.result);
+                reader.readAsDataURL(file);
+            }
+        });
     }
 
     getMousePos(evt) {
@@ -209,7 +261,7 @@ class LabelEditor {
                 pos.y >= el.y - h &&
                 pos.y <= el.y + h * 0.2 // slack for descenders
             );
-        } else if (el.type === 'image') {
+        } else if (el.type === 'image' || el.type === 'rect' || el.type === 'circle') {
             return (
                 pos.x >= el.x &&
                 pos.x <= el.x + el.width &&
@@ -251,6 +303,15 @@ class LabelEditor {
                 this.ctx.fillText(el.content, el.x, el.y);
             } else if (el.type === 'image') {
                 this.ctx.drawImage(el.instance, el.x, el.y, el.width, el.height);
+            } else if (el.type === 'rect') {
+                this.ctx.fillStyle = el.color;
+                this.ctx.fillRect(el.x, el.y, el.width, el.height);
+            } else if (el.type === 'circle') {
+                this.ctx.beginPath();
+                this.ctx.fillStyle = el.color;
+                // Draw circle fitting the bounding box
+                this.ctx.ellipse(el.x + el.width/2, el.y + el.height/2, el.width/2, el.height/2, 0, 0, 2 * Math.PI);
+                this.ctx.fill();
             }
             this.ctx.restore();
         });
@@ -313,6 +374,8 @@ document.getElementById('image-upload').addEventListener('change', (e) => {
 document.getElementById('undo-btn').addEventListener('click', () => editor.undo());
 document.getElementById('delete-el-btn').addEventListener('click', () => editor.deleteSelected());
 document.getElementById('clear-btn').addEventListener('click', () => editor.clear());
+document.getElementById('add-rect-btn').addEventListener('click', () => editor.addShape('rect'));
+document.getElementById('add-circle-btn').addEventListener('click', () => editor.addShape('circle'));
 
 // Key listener for delete
 document.addEventListener('keydown', (e) => {
