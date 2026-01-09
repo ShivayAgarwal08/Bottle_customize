@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - AquaLabel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container" style="padding-top: 2rem;">
+        <div class="dashboard-header">
+            <h1>Community Designs</h1>
+            <p style="color: var(--text-muted);">Explore designs created by other users.</p>
+        </div>
+
+        <div class="designs-grid" id="community-list">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const designs = window.App.Data.getCommunityDesigns();
+            const grid = document.getElementById('community-list');
+
+            designs.forEach(design => {
+                const card = document.createElement('div');
+                card.className = 'design-card';
+                card.innerHTML = `
+                    <div class="design-preview">
+                        <img src="${design.preview}" alt="Community Design">
+                    </div>
+                    <div class="design-info">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <h3 style="font-size: 1.1rem;">By ${design.designer}</h3>
+                            <span style="font-size: 0.9rem; color: #ef4444;">❤️ ${design.likes}</span>
+                        </div>
+                        
+                        <div class="design-actions">
+                             <button class="btn btn-primary" style="width: 100%;" onclick="alert('Opened in editor as template!')">Use Template</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>
