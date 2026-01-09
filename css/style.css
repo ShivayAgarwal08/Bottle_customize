@@ -269,12 +269,17 @@ img {
 }
 
 .feature-card {
-  background: var(--bg-surface);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
   padding: 2rem;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
   text-align: center;
   transition: var(--transition);
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: 0.1s;
 }
 
 .feature-card:hover {
@@ -301,13 +306,17 @@ img {
 }
 
 .stat-card {
-  background: var(--bg-surface);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
   padding: 1.5rem;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--glass-shadow);
   display: flex;
   align-items: center;
   gap: 1rem;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .stat-value {
@@ -328,8 +337,10 @@ img {
 }
 
 .action-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 2rem;
   text-align: center;
@@ -340,6 +351,8 @@ img {
   align-items: center;
   justify-content: center;
   height: 200px;
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: 0.1s;
 }
 
 .action-card:hover {
@@ -416,16 +429,19 @@ canvas {
 }
 
 .design-card {
-  background: var(--bg-surface);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--glass-shadow);
   transition: var(--transition);
+  animation: fadeIn 0.5s ease-out forwards;
 }
-
 .design-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .design-preview {
