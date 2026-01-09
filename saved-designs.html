@@ -51,8 +51,8 @@
                         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Created on ${design.date}</p>
                         
                         <div class="design-actions">
-                            <button class="btn btn-outline" style="flex: 1; padding: 0.5rem;" onclick="alert('In a real app, this would load the editor with ID: ${design.id}')">Edit</button>
-                            <a href="${design.preview}" download="label-${design.id}.png" class="btn btn-primary" style="flex: 1; padding: 0.5rem; text-decoration: none; text-align: center;">Export</a>
+                            <button class="btn btn-outline" style="flex: 1; padding: 0.5rem;" onclick="editDesign(${design.id})">✏️ Edit</button>
+                            <button class="btn btn-primary" style="flex: 1; padding: 0.5rem;" onclick="downloadDesign('${design.preview}')">⬇ Export</button>
                             <button class="btn btn-danger" style="padding: 0.5rem;" onclick="deleteDesign(${design.id})">❌</button>
                         </div>
                     </div>
@@ -61,12 +61,24 @@
             });
         });
 
-        function deleteDesign(id) {
+        window.editDesign = (id) => {
+            window.location.href = `design.html?project=${id}`;
+        };
+
+        window.downloadDesign = (url) => {
+            const link = document.createElement('a');
+            link.download = `design-${Date.now()}.png`;
+            link.href = url;
+            link.click();
+        };
+
+        window.deleteDesign = (id) => {
             if(confirm('Are you sure you want to delete this design?')) {
                 window.App.Data.deleteDesign(id);
+                // Simple reload to refresh list
                 window.location.reload();
             }
-        }
+        };
     </script>
 </body>
 </html>

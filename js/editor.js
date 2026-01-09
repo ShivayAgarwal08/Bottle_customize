@@ -17,23 +17,66 @@ class LabelEditor {
         this.initEvents();
         this.render();
         this.saveState();
+        
+        // Auto-load project if exists in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('project');
+        if (projectId) {
+            this.loadProject(projectId);
+        }
     }
 
+    loadProject(id) {
+        const designs = window.App.Data.getDesigns();
+        const project = designs.find(d => d.id == id);
+        if (project && project.state) {
+            // Restore state
+            this.bgColor = project.state.bgColor;
+            this.elements = [];
+            
+            // Rehydrate elements (especially images)
+            project.state.elements.forEach(el => {
+                if (el.type === 'image') {
+                    // Images need to re-load their source
+                    const img = new Image();
+                    img.src = el.src; // We need to ensure we save src
+                    img.onload = () => {
+                        el.instance = img;
+                        this.elements.push(el);
+                        this.render();
+                    };
+                } else {
+                    this.elements.push(el);
+                }
+            });
+            
+            this.render();
+            window.App.showToast('Project loaded successfully', 'success');
+        }
+    }
+
+    // Updated saveState to include src for images
     saveState() {
-        // Deep clone simple objects, assume images are references (ok for now, or use src)
         const state = {
-            elements: this.elements.map(el => ({...el})),
+            elements: this.elements.map(el => {
+                // Determine src for image persistence
+                if (el.type === 'image' && !el.src) {
+                     // Try to recover src if not explicit (this is tricky for dataURLs, usually we keep src prop)
+                     el.src = el.instance.src; 
+                }
+                const copy = {...el};
+                delete copy.instance; // Don't save DOM objects
+                return copy;
+            }),
             bgColor: this.bgColor
         };
-        // Simple optimization: don't save if same as last
+        // ... history logic same ...
         if (this.history.length > 0) {
             const last = JSON.stringify(this.history[this.history.length - 1]);
             const curr = JSON.stringify(state);
             if (last === curr) return; 
         }
-        
         this.history.push(state);
-        // Limit history
         if(this.history.length > 20) this.history.shift();
     }
 
@@ -43,10 +86,19 @@ class LabelEditor {
         const prevState = this.history[this.history.length - 1];
         
         // Restore
+        // Restore
         this.bgColor = prevState.bgColor;
-        // We need to carefully restore elements. For images, we already have instance refs in memory so it's fine for this session.
-        // If we were reloading page, we'd need to re-create Image objects.
-        this.elements = prevState.elements.map(el => ({...el})); 
+        
+        this.elements = prevState.elements.map(el => {
+            const copy = {...el};
+            if (copy.type === 'image') {
+                const img = new Image();
+                img.src = copy.src;
+                copy.instance = img;
+                img.onload = () => this.render();
+            }
+            return copy;
+        }); 
         this.selectedElement = null;
         this.render();
         this.updateUI();
@@ -92,6 +144,7 @@ class LabelEditor {
             this.elements.push({
                 type: 'image',
                 instance: img,
+                src: imgSrc, // Save source!
                 x: (this.canvas.width - w) / 2,
                 y: (this.canvas.height - h) / 2,
                 width: w,
@@ -156,10 +209,60 @@ class LabelEditor {
 
     updateUI() {
         const tools = document.getElementById('selection-tools');
+        const propPanel = document.getElementById('properties-panel');
+        
         if (this.selectedElement) {
             tools.style.display = 'block';
+            propPanel.style.display = 'block';
+            
+            // Populate Properties
+            const el = this.selectedElement;
+            const propContent = document.getElementById('prop-content');
+            
+            if (el.type === 'text') {
+                propContent.innerHTML = `
+                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Content</label>
+                    <input type="text" id="prop-text" value="${el.content}" style="width:100%; margin-bottom:1rem; padding:0.4rem;">
+                    
+                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Color</label>
+                    <input type="color" id="prop-color" value="${el.color}" style="width:100%; height:30px; margin-bottom:1rem;">
+                    
+                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Size</label>
+                    <input type="range" id="prop-size" value="${el.size}" min="10" max="200" style="width:100%;">
+                `;
+                
+                // Bind Events
+                document.getElementById('prop-text').addEventListener('input', (e) => {
+                    el.content = e.target.value;
+                    this.render();
+                    this.saveState();
+                });
+                document.getElementById('prop-color').addEventListener('input', (e) => {
+                    el.color = e.target.value;
+                    this.render();
+                });
+                document.getElementById('prop-size').addEventListener('input', (e) => {
+                    el.size = parseInt(e.target.value);
+                    this.render();
+                });
+                
+            } else if (el.type === 'rect' || el.type === 'circle') {
+                 propContent.innerHTML = `
+                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Fill Color</label>
+                    <input type="color" id="prop-color" value="${el.color}" style="width:100%; height:30px; margin-bottom:1rem;">
+                `;
+                 document.getElementById('prop-color').addEventListener('input', (e) => {
+                    el.color = e.target.value;
+                    this.render();
+                    this.saveState();
+                });
+            } else {
+                propContent.innerHTML = '<p style="color:#64748b; font-size:0.8rem;">Image properties not available</p>';
+            }
+
         } else {
             tools.style.display = 'none';
+            propPanel.style.display = 'none';
         }
     }
 
@@ -531,7 +634,45 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Export Logic
+// Save Logic 
+const saveProject = (previewUrl) => {
+   // Get current state
+   const state = {
+       elements: editor.elements.map(el => {
+           const copy = {...el}; 
+           if(el.type==='image') copy.src = el.src || el.instance.src; 
+           delete copy.instance; 
+           return copy;
+       }),
+       bgColor: editor.bgColor
+   };
+
+   // Check if we are updating existing or new
+   const urlParams = new URLSearchParams(window.location.search);
+   const existingId = urlParams.get('project');
+   const id = existingId ? parseInt(existingId) : Date.now();
+   
+   // Save to Data
+    const design = {
+        id: id,
+        name: existingId ? "Updated Design" : "My Design " + new Date().toLocaleTimeString(),
+        date: new Date().toISOString().split('T')[0],
+        preview: previewUrl,
+        state: state // THE MAGIC SAUCE
+    };
+    
+    // In a real app we'd update, here we just push new one or replace
+    if (existingId) {
+        window.App.Data.deleteDesign(id); // Remove old
+    }
+    window.App.Data.addDesign(design);
+    
+    // Update URL if new
+    if (!existingId) {
+         window.history.replaceState({}, document.title, window.location.pathname + '?project=' + id);
+    }
+};
+
 document.getElementById('export-btn').addEventListener('click', () => {
     const dataUrl = editor.exportImage();
     const link = document.createElement('a');
@@ -539,14 +680,15 @@ document.getElementById('export-btn').addEventListener('click', () => {
     link.href = dataUrl;
     link.click();
     
-    // Also save to mock Data
-    window.App.Data.addDesign({
-        id: Date.now(),
-        name: "New Design",
-        date: new Date().toISOString().split('T')[0],
-        preview: dataUrl
-    });
-    window.App.showToast('Design exported and saved!', 'success');
+    saveProject(dataUrl);
+    window.App.showToast('Project saved & exported!', 'success');
+});
+
+// "Save" button specifically
+document.getElementById('save-project-btn').addEventListener('click', () => {
+    const dataUrl = editor.exportImage();
+    saveProject(dataUrl);
+    window.App.showToast('Project Saved!', 'success');
 });
 
 // Check for Template in URL

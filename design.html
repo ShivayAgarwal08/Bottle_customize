@@ -15,6 +15,7 @@
             <h2 style="margin-bottom: 2rem;">Label Editor</h2>
             
                 <div style="display: flex; gap: 0.5rem; justify-content: space-between; margin-bottom: 1rem;">
+                    <button class="btn btn-primary" id="save-project-btn" style="flex:1; font-size: 0.8rem; background-color: #10b981;">💾 Save</button>
                     <button class="btn btn-outline" id="undo-btn" style="flex:1; font-size: 0.8rem;">↩ Undo</button>
                     <button class="btn btn-outline" id="clear-btn" style="flex:1; font-size: 0.8rem; color: #ef4444; border-color: #ef4444;">🗑️ Clear</button>
                 </div>
@@ -74,6 +75,12 @@
                         <input type="file" id="image-upload" accept="image/*" style="display: none;">
                     </label>
                 </div>
+            </div>
+
+            <!-- Properties Panel (Dynamic) -->
+            <div id="properties-panel" class="tool-group" style="display: none; background: #f1f5f9; padding: 1rem; border-radius: var(--radius);">
+                <h3>Properties</h3>
+                <div id="prop-content"></div>
             </div>
 
             <div class="tool-group" style="margin-top: auto;">
