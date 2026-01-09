@@ -14,6 +14,11 @@
         <div class="toolbar">
             <h2 style="margin-bottom: 2rem;">Label Editor</h2>
             
+                <div style="display: flex; gap: 0.5rem; justify-content: space-between; margin-bottom: 1rem;">
+                    <button class="btn btn-outline" id="undo-btn" style="flex:1; font-size: 0.8rem;">↩ Undo</button>
+                    <button class="btn btn-outline" id="clear-btn" style="flex:1; font-size: 0.8rem; color: #ef4444; border-color: #ef4444;">🗑️ Clear</button>
+                </div>
+            
             <div class="tool-group">
                 <h3>Canvas Size</h3>
                 <div style="display: flex; gap: 0.5rem; justify-content: space-between; margin-bottom: 1rem;">
@@ -31,12 +36,22 @@
             </div>
 
             <div class="tool-group">
-                <h3>Text</h3>
+                <h3>Text Tools</h3>
                 <input type="text" id="text-input" placeholder="Enter text..." style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius);">
+                
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <input type="color" id="text-color" value="#000000" style="height: 38px; width: 40px; padding: 0; border: none;">
+                    <select id="font-family" style="flex: 2; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius);">
+                        <option value="Inter, sans-serif">Inter</option>
+                        <option value="serif">Serif</option>
+                        <option value="cursive">Handwritten</option>
+                        <option value="monospace">Mono</option>
+                    </select>
                     <input type="number" id="text-size" value="24" min="10" max="100" style="width: 60px; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius);">
-                    <button class="btn btn-primary" id="add-text-btn" style="flex: 1;">Add Text</button>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <input type="color" id="text-color" value="#000000" style="height: 38px; width: 40px; padding: 0; border: none; cursor: pointer;">
+                    <button class="btn btn-primary" id="add-text-btn" style="flex: 1;">+ Add Text</button>
                 </div>
             </div>
 
@@ -51,8 +66,9 @@
             </div>
 
             <div class="tool-group" style="margin-top: auto;">
+                <button class="btn btn-outline" id="delete-el-btn" style="width: 100%; margin-bottom: 1rem; display: none;">Remove Selected Element</button>
+                
                 <button class="btn btn-primary" id="export-btn" style="width: 100%; margin-bottom: 1rem;">Export Label (PNG)</button>
-                <button class="btn btn-outline" id="clear-btn" style="width: 100%; color: #ef4444; border-color: #ef4444;">Clear Canvas</button>
             </div>
         </div>
 

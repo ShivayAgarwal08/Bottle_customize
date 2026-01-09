@@ -64,6 +64,43 @@ window.App = window.App || {};
         document.body.prepend(nav);
     };
 
+    // Toast Notification System
+    const showToast = (message, type = 'info') => {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = 'ℹ️';
+        if (type === 'success') icon = '✅';
+        if (type === 'error') icon = '❌';
+
+        toast.innerHTML = `
+            <div style="font-size: 1.2rem;">${icon}</div>
+            <div class="toast-content">
+                <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                <div class="toast-msg">${message}</div>
+            </div>
+        `;
+
+        container.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    };
+
+    // Public API
+    window.App.showToast = showToast;
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         renderNavbar();
