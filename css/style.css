@@ -93,7 +93,50 @@ body {
     radial-gradient(at 0% 0%, hsla(280, 50%, 15%, 1) 0px, transparent 50%);
 }
 
-.btn-primary {
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Custom Cursors */
+.cursor-nwse {
+  cursor: nwse-resize;
+}
+.cursor-nesw {
+  cursor: nesw-resize;
+}
+.cursor-move {
+  cursor: move;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  font-size: 1rem;
+}
   background: var(--gradient-primary);
   color: white;
   border: none;
