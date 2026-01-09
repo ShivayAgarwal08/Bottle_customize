@@ -5,7 +5,10 @@ class LabelEditor {
         this.elements = []; 
         this.history = []; // Undo stack
         this.selectedElement = null;
+        this.selectedElement = null;
         this.isDragging = false;
+        this.isResizing = false;
+        this.resizeHandle = null; // 'nw', 'ne', 'sw', 'se'
         this.dragOffset = { x: 0, y: 0 };
         this.bgColor = '#ffffff';
         this.canvas.width = 600;
@@ -165,6 +168,14 @@ class LabelEditor {
         // Mouse Down
         this.canvas.addEventListener('mousedown', (e) => {
             const pos = this.getMousePos(e);
+            
+            // Check Resize Handles first
+            if (this.selectedElement && this.isResizingHit(pos)) {
+                this.isResizing = true;
+                this.saveState(); // Save before resize starts
+                return;
+            }
+
             const clickedIndex = this.elements.slice().reverse().findIndex(el => this.isHit(pos, el));
             
             if (clickedIndex !== -1) {
@@ -187,8 +198,26 @@ class LabelEditor {
 
         // Mouse Move
         this.canvas.addEventListener('mousemove', (e) => {
-            if (this.isDragging && this.selectedElement) {
-                const pos = this.getMousePos(e);
+            const pos = this.getMousePos(e);
+            
+            // Handle Cursor Style
+            if (this.selectedElement) {
+                const handle = this.getHandleHit(pos);
+                if (handle) {
+                    this.canvas.style.cursor = (handle === 'nw' || handle === 'se') ? 'nwse-resize' : 'nesw-resize';
+                } else if (this.isHit(pos, this.selectedElement)) {
+                    this.canvas.style.cursor = 'move';
+                } else {
+                    this.canvas.style.cursor = 'default';
+                }
+            } else {
+                this.canvas.style.cursor = 'default';
+            }
+
+            if (this.isResizing && this.selectedElement) {
+                this.handleResize(pos);
+                this.render();
+            } else if (this.isDragging && this.selectedElement) {
                 this.selectedElement.x = pos.x - this.dragOffset.x;
                 this.selectedElement.y = pos.y - this.dragOffset.y;
                 this.render();
@@ -197,9 +226,11 @@ class LabelEditor {
 
         // Mouse Up
         this.canvas.addEventListener('mouseup', () => {
-            if(this.isDragging) {
+            if(this.isDragging || this.isResizing) {
                 this.isDragging = false;
-                this.saveState(); // Save state after drag finishes
+                this.isResizing = false;
+                this.resizeHandle = null;
+                this.saveState(); 
             }
         });
         
@@ -247,22 +278,21 @@ class LabelEditor {
     }
 
     isHit(pos, el) {
+        // ... existing isHit ...
         if (el.type === 'text') {
             this.ctx.font = `${el.size}px ${el.font}`;
             // Improve hit detection for text
             const metrics = this.ctx.measureText(el.content);
             const w = metrics.width;
             const h = el.size; 
-            // Text is drawn centered at x, and baseline is roughly y
-            // Approximating bounding box for centered text:
              return (
                 pos.x >= el.x - w/2 &&
                 pos.x <= el.x + w/2 &&
                 pos.y >= el.y - h &&
-                pos.y <= el.y + h * 0.2 // slack for descenders
+                pos.y <= el.y + h * 0.2
             );
         } else if (el.type === 'image' || el.type === 'rect' || el.type === 'circle') {
-            return (
+             return (
                 pos.x >= el.x &&
                 pos.x <= el.x + el.width &&
                 pos.y >= el.y &&
@@ -270,6 +300,90 @@ class LabelEditor {
             );
         }
         return false;
+    }
+
+    // Resize Logic Helpers
+    getElRect(el) {
+        if (el.type === 'text') {
+            this.ctx.font = `${el.size}px ${el.font}`;
+            const m = this.ctx.measureText(el.content);
+            return { x: el.x - m.width/2, y: el.y - el.size, w: m.width, h: el.size };
+        } else {
+            return { x: el.x, y: el.y, w: el.width, h: el.height };
+        }
+    }
+
+    isResizingHit(pos) {
+        this.resizeHandle = this.getHandleHit(pos);
+        return !!this.resizeHandle;
+    }
+
+    getHandleHit(pos) {
+        if (!this.selectedElement) return null;
+        const rect = this.getElRect(this.selectedElement);
+        const handleSize = 10;
+        
+        // Check corners
+        if (this.checkPoint(pos, rect.x - handleSize/2, rect.y - handleSize/2, handleSize)) return 'nw';
+        if (this.checkPoint(pos, rect.x + rect.w - handleSize/2, rect.y - handleSize/2, handleSize)) return 'ne';
+        if (this.checkPoint(pos, rect.x - handleSize/2, rect.y + rect.h - handleSize/2, handleSize)) return 'sw';
+        if (this.checkPoint(pos, rect.x + rect.w - handleSize/2, rect.y + rect.h - handleSize/2, handleSize)) return 'se';
+        return null;
+    }
+
+    checkPoint(pos, x, y, s) {
+        return pos.x >= x && pos.x <= x + s && pos.y >= y && pos.y <= y + s;
+    }
+
+    handleResize(pos) {
+        const el = this.selectedElement;
+        const rect = this.getElRect(el);
+        // Simple resizing logic - just adjusting dimensions based on drag
+        // This is complex for centering text, but for rect/img it's standard
+        
+        let newW = el.width;
+        let newH = el.height;
+        let newX = el.x;
+        let newY = el.y;
+        
+        // For text, we just scale size based on vertical drag
+        if (el.type === 'text') {
+            const dy = pos.y - rect.y; // distance from top
+           // el.size = Math.max(10, Math.abs(dy)); // Simplification
+           // Better text scaling: drag SE corner
+           if (this.resizeHandle === 'se' || this.resizeHandle === 'sw') {
+               const newSize = Math.abs(pos.y - el.y) + 10; // Approx
+               el.size = Math.max(10, newSize);
+           }
+           return;
+        }
+
+        // For shapes/images
+        if (this.resizeHandle === 'se') {
+            newW = pos.x - el.x;
+            newH = pos.y - el.y;
+        } else if (this.resizeHandle === 'sw') {
+            newW = el.x + el.width - pos.x;
+            newH = pos.y - el.y;
+            newX = pos.x;
+        } else if (this.resizeHandle === 'ne') {
+            newW = pos.x - el.x;
+            newH = el.y + el.height - pos.y;
+            newY = pos.y;
+        } else if (this.resizeHandle === 'nw') {
+            newW = el.x + el.width - pos.x;
+            newH = el.y + el.height - pos.y;
+            newX = pos.x;
+            newY = pos.y;
+        }
+        
+        // Min size constraint
+        if(newW > 10 && newH > 10) {
+            el.width = newW;
+            el.height = newH;
+            el.x = newX;
+            el.y = newY;
+        }
     }
 
     render() {
@@ -286,14 +400,40 @@ class LabelEditor {
                  this.ctx.strokeStyle = '#2563eb';
                  this.ctx.lineWidth = 2;
                  
-                 // Draw bounding box based on type
+                 let rx, ry, rw, rh;
+                 
+                 // Calculate bounding box for render
                  if (el.type === 'text') {
                      this.ctx.font = `${el.size}px ${el.font}`;
                      const m = this.ctx.measureText(el.content);
-                     this.ctx.strokeRect(el.x - m.width/2 - 5, el.y - el.size - 5, m.width + 10, el.size + 15);
+                     rx = el.x - m.width/2 - 5;
+                     ry = el.y - el.size - 5;
+                     rw = m.width + 10;
+                     rh = el.size + 15;
                  } else {
-                     this.ctx.strokeRect(el.x - 2, el.y - 2, el.width + 4, el.height + 4);
+                     rx = el.x - 2;
+                     ry = el.y - 2;
+                     rw = el.width + 4;
+                     rh = el.height + 4;
                  }
+                 
+                 this.ctx.strokeRect(rx, ry, rw, rh);
+                 
+                 // Draw Handles
+                 this.ctx.fillStyle = '#ffffff';
+                 this.ctx.strokeStyle = '#2563eb';
+                 this.ctx.lineWidth = 1;
+                 const hSize = 8;
+                 
+                 const drawHandle = (x, y) => {
+                     this.ctx.fillRect(x - hSize/2, y - hSize/2, hSize, hSize);
+                     this.ctx.strokeRect(x - hSize/2, y - hSize/2, hSize, hSize);
+                 };
+                 
+                 drawHandle(rx, ry); // NW
+                 drawHandle(rx + rw, ry); // NE
+                 drawHandle(rx, ry + rh); // SW
+                 drawHandle(rx + rw, ry + rh); // SE
             }
 
             if (el.type === 'text') {
@@ -411,20 +551,26 @@ document.getElementById('export-btn').addEventListener('click', () => {
 
 // Check for Template in URL
 document.addEventListener('DOMContentLoaded', () => {
+    // ... template logic ...
     const urlParams = new URLSearchParams(window.location.search);
     const templateId = urlParams.get('template');
-    
     if (templateId) {
         const designs = window.App.Data.getCommunityDesigns();
         const template = designs.find(d => d.id == templateId);
-        
         if (template) {
-            // Load template image
             editor.addImage(template.preview);
             window.App.showToast(`Loaded template: ${template.designer}`, 'success');
-            
-            // Clean URL
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }
+});
+
+// Preview Modal Logic
+document.getElementById('preview-btn').addEventListener('click', () => {
+    const dataUrl = editor.exportImage();
+    const modal = document.getElementById('preview-modal');
+    const labelView = document.getElementById('bottle-label');
+    
+    labelView.style.backgroundImage = `url(${dataUrl})`;
+    modal.style.display = 'flex';
 });
