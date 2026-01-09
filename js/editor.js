@@ -345,3 +345,23 @@ document.getElementById('export-btn').addEventListener('click', () => {
     });
     window.App.showToast('Design exported and saved!', 'success');
 });
+
+// Check for Template in URL
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const templateId = urlParams.get('template');
+    
+    if (templateId) {
+        const designs = window.App.Data.getCommunityDesigns();
+        const template = designs.find(d => d.id == templateId);
+        
+        if (template) {
+            // Load template image
+            editor.addImage(template.preview);
+            window.App.showToast(`Loaded template: ${template.designer}`, 'success');
+            
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+});
