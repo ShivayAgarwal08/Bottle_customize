@@ -1,201 +1,341 @@
-# AquaLabel 💧
+<div align="center">
 
-> **Design beautiful custom water bottle labels — directly in your browser.**
+<br/>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-6366f1.svg)](LICENSE)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![No Backend](https://img.shields.io/badge/Backend-None-28a745)](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+<img src="https://img.shields.io/badge/-%F0%9F%92%A7%20AquaLabel-6366f1?style=for-the-badge&labelColor=0a0e17&color=6366f1&logoColor=white" alt="AquaLabel" height="50" />
+
+<h1>AquaLabel — Custom Water Bottle Label Designer</h1>
+
+<p>
+  A premium, 100% browser-based drag-and-drop label design platform.<br/>
+  Create, customize, preview, and export stunning water bottle labels — instantly.
+</p>
+
+<br/>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-6366f1?style=flat-square)](LICENSE)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![No Backend](https://img.shields.io/badge/Backend-None%20Required-28a745?style=flat-square)](#)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-a855f7?style=flat-square)](CONTRIBUTING.md)
+
+<br/>
+
+[🚀 Live Demo](#getting-started) · [📖 Docs](#project-structure) · [🤝 Contributing](CONTRIBUTING.md) · [🐛 Report Bug](../../issues)
+
+<br/>
+
+</div>
 
 ---
 
-## 🌟 Overview
+## 📸 Screenshots
 
-**AquaLabel** is a fully client-side, drag-and-drop label design platform for water bottles. Create professional, brand-ready labels in minutes — no design skills, no account required, no backend.
+<div align="center">
 
-Whether you're planning a wedding, running a corporate event, or launching a product line, AquaLabel makes label creation fast, fun, and beautiful.
+### 🏠 Landing Page
+<img src="assets/screenshots/landing.png" alt="AquaLabel Landing Page" width="100%" style="border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);" />
+
+<br/><br/>
+
+### ✏️ Label Editor — with Layers Panel
+<img src="assets/screenshots/editor.png" alt="AquaLabel Label Editor" width="100%" />
+
+<br/><br/>
+
+### 📊 Dashboard
+<img src="assets/screenshots/dashboard.png" alt="AquaLabel Dashboard" width="100%" />
+
+<br/><br/>
+
+### 🌐 Community Gallery
+<img src="assets/screenshots/community.png" alt="AquaLabel Community Designs" width="100%" />
+
+<br/><br/>
+
+### 🔍 Live 3D Bottle Preview
+<img src="assets/screenshots/bottle-preview.png" alt="AquaLabel 3D Bottle Preview" width="70%" />
+
+</div>
 
 ---
 
 ## ✨ Features
 
-| Feature | Description |
-|---|---|
-| 🎨 **Drag-and-Drop Editor** | Intuitive canvas editor with multi-element support |
-| 🗂️ **Layers Panel** | View, select, and delete elements from a visual layers list |
-| ✍️ **Rich Typography** | Multiple fonts, sizes, and colors for text elements |
-| ⬜⚪ **Shape Drawing** | Add rectangles and circles to your label designs |
-| 🖼️ **Image Upload** | Upload logos and photos, or drag-and-drop from desktop |
-| 🔍 **Live 3D Bottle Preview** | See your label wrapped on a virtual bottle before exporting |
-| 🖨️ **PNG Export** | Export crisp, print-ready images instantly |
-| 💾 **Auto-Save Projects** | Designs are saved in `localStorage` — no account needed |
-| 🌐 **Community Gallery** | Browse, like, and use templates from other designers |
-| 🌙 **Dark / Light Mode** | System-preference aware theme with manual toggle |
-| ↩️ **Undo / Redo** | Up to 20-step undo history |
-| 📐 **Multiple Label Sizes** | 250ml, 500ml, 1L, and Square presets |
+<table>
+<tr>
+<td width="50%">
+
+**🎨 Design Tools**
+- Drag-and-drop canvas editor
+- Resize handles for all elements
+- Rectangle & circle shape drawing
+- Rich text with multiple fonts & sizes
+- Custom color picker for every element
+- Logo & image upload (or drag from desktop)
+
+</td>
+<td width="50%">
+
+**🗂️ Layer Management**
+- Live layers panel (right sidebar)
+- Click any layer to select & edit
+- Delete elements directly from the panel
+- Move layers front/back
+- Element auto-naming ("Text 1", "Circle 2")
+- Up to 20-step undo history (Ctrl+Z)
+
+</td>
+</tr>
+<tr>
+<td>
+
+**📐 Label Formats**
+- 250ml Standard preset
+- 500ml Bottle preset
+- 1L Bottle preset
+- Square label preset
+- Custom canvas resize via code
+
+</td>
+<td>
+
+**🌐 App Features**
+- Live 3D bottle preview modal
+- PNG export (print-ready)
+- Community gallery with category filters
+- Like & remix community templates
+- Auto-save to `localStorage`
+- Dark / Light mode (system-aware)
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Getting Started
+
+AquaLabel is a **zero-dependency static web app** — no build step, no server, no npm install.
+
+### Option 1 — Open Directly
+
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/bottle-customize.git
+
+# Just open index.html in your browser!
+```
+
+### Option 2 — Local Dev Server
+
+```bash
+# Python (built-in)
+python -m http.server 8080
+
+# OR with Node.js
+npx serve .
+
+# Then visit → http://localhost:8080
+```
+
+> **Tip:** Use [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for the smoothest dev experience.
+
+---
+
+## 🗺️ App Pages
+
+| Page | Route | Description |
+|---|---|---|
+| 🏠 Landing | `index.html` | Hero, features, how-it-works, CTA |
+| 🔐 Login | `login.html` | Sign in form |
+| 📝 Sign Up | `signup.html` | Account creation |
+| 📊 Dashboard | `dashboard.html` | Stats overview & quick actions |
+| ✏️ Editor | `design.html` | Full label design canvas |
+| 💾 Saved Designs | `saved-designs.html` | Personal design collection |
+| 🌐 Community | `community.html` | Public gallery with filters |
+| 👤 Profile | `profile.html` | Account info & preferences |
 
 ---
 
 ## 🗂️ Project Structure
 
 ```
-BOTTLE CUSTOMIZE/
-├── index.html          # Landing page
-├── login.html          # Sign-in page
-├── signup.html         # Registration page
-├── dashboard.html      # User dashboard with stats
-├── design.html         # Label editor (canvas)
-├── saved-designs.html  # User's saved label collection
-├── community.html      # Community design gallery
-├── profile.html        # User profile & preferences
-├── css/
-│   └── style.css       # Full design system (single stylesheet)
-├── js/
-│   ├── data.js         # Mock data & localStorage API
-│   ├── main.js         # Navbar, theme, toast notifications
-│   └── editor.js       # Canvas editor engine (LabelEditor class)
-├── .gitignore
-├── LICENSE
-├── CONTRIBUTING.md
-└── README.md
+📦 BOTTLE CUSTOMIZE/
+├── 📄 index.html             # Landing page
+├── 📄 login.html             # Auth — Sign In
+├── 📄 signup.html            # Auth — Sign Up
+├── 📄 dashboard.html         # User dashboard
+├── 📄 design.html            # Canvas label editor
+├── 📄 saved-designs.html     # Saved designs gallery
+├── 📄 community.html         # Community gallery
+├── 📄 profile.html           # Profile & preferences
+│
+├── 📁 css/
+│   └── style.css             # Complete design system (single file)
+│
+├── 📁 js/
+│   ├── data.js               # localStorage API + mock data
+│   ├── main.js               # Navbar, theme, toast system
+│   └── editor.js             # LabelEditor class (canvas engine)
+│
+├── 📁 assets/
+│   └── screenshots/          # Project screenshots for README
+│
+├── 📄 README.md
+├── 📄 CONTRIBUTING.md
+├── 📄 LICENSE
+└── 📄 .gitignore
 ```
-
----
-
-## 🚀 Getting Started
-
-AquaLabel is a **static web application** — no installation, no build step, no server required.
-
-### Option 1 — Open Directly (Recommended)
-
-1. Clone or download this repository
-2. Open `index.html` in any modern browser
-
-```bash
-git clone https://github.com/YOUR_USERNAME/aqua-label.git
-cd aqua-label
-# Open index.html in your browser
-```
-
-### Option 2 — Local Dev Server (optional)
-
-For a clean localhost URL, use any static file server:
-
-```bash
-# Using Python
-python -m http.server 8080
-
-# Using Node.js (npx)
-npx serve .
-
-# Using VS Code
-# Install "Live Server" extension → right-click index.html → "Open with Live Server"
-```
-
-Then visit `http://localhost:8080` in your browser.
-
----
-
-## 🎨 Design System
-
-AquaLabel uses a single-source CSS design system (`css/style.css`) with:
-
-- **HSL-based color tokens** for harmonious palette management
-- **Glassmorphism** — backdrop-blur, semi-transparent backgrounds, subtle borders
-- **CSS custom properties** for both light and dark themes
-- **Micro-animations** — scroll-reveal, hover spring effects, float animations
-- **Responsive layouts** — mobile-first grid with `clamp()` typography
-
-### Theme Tokens
-
-| Token | Light | Dark |
-|---|---|---|
-| `--primary` | `hsl(244, 82%, 62%)` | same |
-| `--bg-body` | `hsl(220, 30%, 97%)` | `hsl(220, 28%, 7%)` |
-| `--bg-card` | `rgba(255,255,255,0.75)` | `rgba(30,34,54,0.72)` |
-| `--text-heading` | `hsl(222, 47%, 11%)` | `hsl(222, 30%, 97%)` |
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌───────────────────────────────────────────────────┐
-│              Browser (Pure Frontend)               │
-├──────────────┬────────────────────────────────────┤
-│  Presentation│  index.html, design.html, etc.     │
-├──────────────┼────────────────────────────────────┤
-│  Logic       │  js/editor.js (LabelEditor class)   │
-│              │  js/main.js   (App, Navbar, Toast)  │
-├──────────────┼────────────────────────────────────┤
-│  Data        │  js/data.js + window.localStorage  │
-└──────────────┴────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│         Browser (Fully Client-Side)         │
+├──────────────┬──────────────────────────────┤
+│  Presentation│  *.html pages                │
+│  (View)      │  css/style.css               │
+├──────────────┼──────────────────────────────┤
+│  Logic       │  js/editor.js  LabelEditor   │
+│  (Controller)│  js/main.js    App, Navbar   │
+├──────────────┼──────────────────────────────┤
+│  Data        │  js/data.js + localStorage   │
+│  (Model)     │  No backend. No database.    │
+└──────────────┴──────────────────────────────┘
 ```
 
-**No backend, no database, no API calls.** All state is persisted in the browser's `localStorage`.
+**Zero backend.** All state is persisted in the browser's `localStorage`. The entire app is portable — just copy the folder anywhere.
 
 ---
 
-## 🔑 Key Components
+## 🎨 Design System
 
-### `LabelEditor` class (`js/editor.js`)
-The core canvas engine. Methods include:
+The entire visual language lives in `css/style.css` using CSS custom properties.
 
-| Method | Description |
-|---|---|
-| `addText(text, color, size, font)` | Add a text element to the canvas |
-| `addImage(src)` | Add an image/logo element |
-| `addShape(type)` | Add `rect` or `circle` shapes |
-| `deleteSelected()` | Remove the currently selected element |
-| `undo()` | Restore the previous canvas state |
-| `resize(w, h)` | Resize the label canvas |
-| `exportImage()` | Export canvas as a PNG data URL |
-| `updateLayers()` | Sync the layers panel UI |
-| `saveState()` | Push current state onto undo history |
+### Color Palette
+
+| Token | Value | Usage |
+|---|---|---|
+| `--primary` | `hsl(244, 82%, 62%)` | Indigo — buttons, links, accents |
+| `--secondary` | `hsl(270, 75%, 65%)` | Purple — gradients |
+| `--accent` | `hsl(185, 75%, 45%)` | Teal — highlights |
+| `--success` | `hsl(152, 68%, 46%)` | Green — save, confirmed |
+| `--danger` | `hsl(0, 72%, 58%)` | Red — delete actions |
+
+### Design Principles
+- **Glassmorphism** — `backdrop-filter: blur(20px)`, semi-transparent backgrounds
+- **HSL tokens** — Harmonious palette via HSL instead of raw hex
+- **Spring animations** — `cubic-bezier(0.34, 1.56, 0.64, 1)` for natural motion
+- **Scroll-reveal** — `IntersectionObserver` for staggered card entry
+- **Dark/Light** — Full dual-theme via `[data-theme="dark"]` selector
+
+---
+
+## 🛠️ Editor API Reference
+
+The `LabelEditor` class (in `js/editor.js`) powers the canvas engine.
+
+### Core Methods
+
+```javascript
+const editor = new LabelEditor('editor-canvas');
+
+// Add elements
+editor.addText('Hello World', '#6366f1', 32, 'Outfit, sans-serif');
+editor.addImage(dataUrl);   // Base64 or URL
+editor.addShape('rect');    // or 'circle'
+
+// Edit canvas
+editor.setBackgroundColor('#1e293b');
+editor.resize(800, 400);    // width, height in px
+
+// History
+editor.undo();              // Ctrl+Z (up to 20 steps)
+editor.clear();             // Clear entire canvas
+
+// Export & Save
+const png = editor.exportImage();   // Returns data URL
+
+// Layer management
+editor.deleteSelected();
+editor.moveLayer('up');     // or 'down'
+editor.updateLayers();      // Sync layers panel UI
+```
 
 ### `App.Data` API (`js/data.js`)
-Lightweight localStorage wrapper:
 
-| Method | Description |
-|---|---|
-| `getUser()` | Retrieve the current user profile |
-| `getDesigns()` | Get all saved designs |
-| `addDesign(design)` | Save a new design |
-| `deleteDesign(id)` | Delete a design by ID |
-| `getCommunityDesigns()` | Get community template data |
+```javascript
+window.App.Data.getUser();              // → { name, email, stats }
+window.App.Data.getDesigns();           // → Array of saved designs
+window.App.Data.addDesign(design);      // Save a design
+window.App.Data.deleteDesign(id);       // Delete by ID
+window.App.Data.getCommunityDesigns();  // → Community templates
+```
+
+### Toast Notifications (`js/main.js`)
+
+```javascript
+window.App.showToast('Design saved!', 'success');
+window.App.showToast('Error occurred', 'error');
+window.App.showToast('Tip: click to select', 'info');
+```
 
 ---
 
-## 📸 Screenshots
+## 🌐 Browser Support
 
-> Coming — replace with your own screenshots once deployed.
-
-| Page | Preview |
+| Browser | Support |
 |---|---|
-| Landing Page | `index.html` — Hero, Features, Steps, CTA |
-| Editor | `design.html` — 3-column layout with Layers Panel |
-| Dashboard | `dashboard.html` — Stats + Quick Actions |
-| Community | `community.html` — Filterable gallery with likes |
+| Chrome 90+ | ✅ Full |
+| Firefox 88+ | ✅ Full |
+| Edge 90+ | ✅ Full |
+| Safari 14+ | ✅ Full |
+| Mobile (iOS/Android) | ✅ Responsive |
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+Contributions are very welcome! Please read [**CONTRIBUTING.md**](CONTRIBUTING.md) before opening a PR.
+
+```bash
+# Fork → Clone → Branch → Code → PR
+git checkout -b feature/your-amazing-feature
+git commit -m "Add: your amazing feature"
+git push origin feature/your-amazing-feature
+```
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See [LICENSE](LICENSE) for more information.
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for full text.
 
 ---
 
-## 👨‍💻 Author
+## 🙌 Acknowledgements
 
-Built with ❤️ by [Your Name](https://github.com/YOUR_USERNAME)
+- [**Outfit Font**](https://fonts.google.com/specimen/Outfit) by Google Fonts — for the beautiful typography
+- [**MDN Web Docs**](https://developer.mozilla.org) — HTML5 Canvas API reference
+- Inspired by Canva, Figma, and Linear's design aesthetics
 
 ---
+
+<div align="center">
+
+<br/>
+
+**Made with 💧 and lots of ☕**
 
 *AquaLabel — Because every bottle deserves a beautiful label.*
+
+<br/>
+
+[![Star this repo](https://img.shields.io/github/stars/YOUR_USERNAME/bottle-customize?style=social)](../../stargazers)
+[![Fork this repo](https://img.shields.io/github/forks/YOUR_USERNAME/bottle-customize?style=social)](../../forks)
+
+</div>
