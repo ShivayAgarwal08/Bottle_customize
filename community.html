@@ -1,62 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community - AquaLabel</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        (function() {
-            const storedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            }
-        })();
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — AquaLabel</title>
+  <meta name="description" content="Discover community-created water bottle label designs. Browse, like, and use as templates." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      const t = localStorage.getItem("theme");
+      const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (t === "dark" || (!t && d)) document.documentElement.setAttribute("data-theme", "dark");
+    })();
+  </script>
 </head>
 <body>
-    
-    <div class="container" style="padding-top: 2rem;">
-        <div class="dashboard-header">
-            <h1>Community Designs</h1>
-            <p style="color: var(--text-muted);">Explore designs created by other users.</p>
-        </div>
 
-        <div class="designs-grid" id="community-list">
-            <!-- Populated by JS -->
-        </div>
+  <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1>Community Designs 🌐</h1>
+      <p>Get inspired by what others are creating. Use any design as a template.</p>
     </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const designs = window.App.Data.getCommunityDesigns();
-            const grid = document.getElementById('community-list');
+    <!-- Filter Tabs -->
+    <div id="category-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <button class="btn btn-primary btn-sm filter-tab" data-cat="all">All</button>
+      <button class="btn btn-ghost btn-sm filter-tab" data-cat="floral">🌸 Floral</button>
+      <button class="btn btn-ghost btn-sm filter-tab" data-cat="eco">🌿 Eco</button>
+      <button class="btn btn-ghost btn-sm filter-tab" data-cat="minimal">⬜ Minimal</button>
+      <button class="btn btn-ghost btn-sm filter-tab" data-cat="glacier">❄️ Glacier</button>
+    </div>
 
-            designs.forEach(design => {
-                const card = document.createElement('div');
-                card.className = 'design-card';
-                card.innerHTML = `
-                    <div class="design-preview">
-                        <img src="${design.preview}" alt="Community Design">
-                    </div>
-                    <div class="design-info">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                            <h3 style="font-size: 1.1rem;">By ${design.designer}</h3>
-                            <span style="font-size: 0.9rem; color: #ef4444;">❤️ ${design.likes}</span>
-                        </div>
-                        
-                        <div class="design-actions">
-                             <button class="btn btn-primary" style="width: 100%;" onclick="window.location.href='design.html?template=${design.id}'">Use Template</button>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+    <!-- Grid -->
+    <div class="designs-grid" id="community-list"></div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const categoryMap = {
+      101: 'floral', 102: 'eco', 103: 'glacier', 104: 'minimal'
+    };
+    const likes = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCommunity('all');
+
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(b => {
+            b.classList.remove('btn-primary');
+            b.classList.add('btn-ghost');
+          });
+          btn.classList.add('btn-primary');
+          btn.classList.remove('btn-ghost');
+          renderCommunity(btn.dataset.cat);
         });
-    </script>
+      });
+    });
+
+    function renderCommunity(cat) {
+      const designs = window.App.Data.getCommunityDesigns();
+      const grid = document.getElementById("community-list");
+      grid.innerHTML = "";
+
+      const filtered = cat === 'all' ? designs : designs.filter(d => categoryMap[d.id] === cat);
+
+      filtered.forEach((design, i) => {
+        if (!likes[design.id]) likes[design.id] = design.likes;
+
+        const card = document.createElement("div");
+        card.className = "design-card";
+        card.style.animationDelay = `${i * 0.07}s`;
+
+        card.innerHTML = `
+          <div class="design-preview">
+            <img src="${design.preview}" alt="Design by ${design.designer}" />
+          </div>
+          <div class="design-info">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+              <h3>By ${design.designer}</h3>
+              <button class="like-badge" id="like-btn-${design.id}" onclick="toggleLike(${design.id})">
+                ❤️ <span id="like-count-${design.id}">${likes[design.id]}</span>
+              </button>
+            </div>
+            <p class="design-meta">🏷️ ${(categoryMap[design.id] || 'design').charAt(0).toUpperCase() + (categoryMap[design.id] || 'design').slice(1)}</p>
+            <div class="design-actions" style="margin-top:0.75rem;">
+              <button class="btn btn-primary btn-sm" style="width:100%;" onclick="window.location.href='design.html?template=${design.id}'">
+                🎨 Use as Template
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; observer.unobserve(e.target); }
+        }),
+        { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
+      );
+      grid.querySelectorAll('.design-card').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`;
+        observer.observe(el);
+      });
+    }
+
+    window.toggleLike = (id) => {
+      likes[id] = (likes[id] || 0) + 1;
+      document.getElementById(`like-count-${id}`).textContent = likes[id];
+      window.App.showToast('Liked! ❤️', 'success');
+    };
+  </script>
 </body>
 </html>

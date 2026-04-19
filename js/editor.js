@@ -2,28 +2,26 @@ class LabelEditor {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        this.elements = []; 
-        this.history = []; // Undo stack
-        this.selectedElement = null;
+        this.elements = [];
+        this.history = [];
         this.selectedElement = null;
         this.isDragging = false;
         this.isResizing = false;
-        this.resizeHandle = null; // 'nw', 'ne', 'sw', 'se'
+        this.resizeHandle = null;
         this.dragOffset = { x: 0, y: 0 };
         this.bgColor = '#ffffff';
+        this._elCounter = 0;
         this.canvas.width = 600;
         this.canvas.height = 300;
 
         this.initEvents();
         this.render();
         this.saveState();
-        
-        // Auto-load project if exists in URL
+        this.updateLayers();
+
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('project');
-        if (projectId) {
-            this.loadProject(projectId);
-        }
+        if (projectId) this.loadProject(projectId);
     }
 
     loadProject(id) {
@@ -119,17 +117,20 @@ class LabelEditor {
 
     addText(text, color, size, font) {
         if (!text) return;
+        this._elCounter++;
         this.elements.push({
             type: 'text',
+            name: `Text ${this._elCounter}`,
             content: text,
             color: color,
             size: parseInt(size),
-            font: font || 'Inter, sans-serif',
+            font: font || 'Outfit, sans-serif',
             x: this.canvas.width / 2,
             y: this.canvas.height / 2
         });
         this.render();
         this.saveState();
+        this.updateLayers();
         window.App.showToast('Text added', 'success');
     }
 
@@ -140,11 +141,12 @@ class LabelEditor {
             const aspect = img.width / img.height;
             let w = 150;
             let h = 150 / aspect;
-            
+            this._elCounter++;
             this.elements.push({
                 type: 'image',
+                name: `Image ${this._elCounter}`,
                 instance: img,
-                src: imgSrc, // Save source!
+                src: imgSrc,
                 x: (this.canvas.width - w) / 2,
                 y: (this.canvas.height - h) / 2,
                 width: w,
@@ -152,14 +154,17 @@ class LabelEditor {
             });
             this.render();
             this.saveState();
+            this.updateLayers();
             window.App.showToast('Image uploaded', 'success');
         };
     }
 
     addShape(type) {
-        let el = {
+        this._elCounter++;
+        const el = {
             type: type,
-            color: '#2563eb', // Default blue
+            name: `${type.charAt(0).toUpperCase() + type.slice(1)} ${this._elCounter}`,
+            color: '#6366f1',
             x: this.canvas.width / 2 - 50,
             y: this.canvas.height / 2 - 50,
             width: 100,
@@ -168,7 +173,8 @@ class LabelEditor {
         this.elements.push(el);
         this.render();
         this.saveState();
-        window.App.showToast(`${type} added`, 'success');
+        this.updateLayers();
+        window.App.showToast(`${el.name} added`, 'success');
     }
 
     moveLayer(direction) {
@@ -194,72 +200,115 @@ class LabelEditor {
         this.render();
         this.saveState();
         this.updateUI();
+        this.updateLayers();
         window.App.showToast('Element deleted', 'info');
     }
 
     clear() {
-        if(confirm('Clear entire design?')) {
+        if (confirm('Clear entire design?')) {
             this.elements = [];
             this.bgColor = '#ffffff';
+            this._elCounter = 0;
+            this.selectedElement = null;
             this.render();
             this.saveState();
+            this.updateUI();
+            this.updateLayers();
             window.App.showToast('Canvas cleared', 'info');
         }
+    }
+
+    /* ── Layers Panel ── */
+    updateLayers() {
+        const list = document.getElementById('layers-list');
+        const empty = document.getElementById('layers-empty');
+        if (!list) return;
+
+        // Clear all layer items (keep empty msg reference)
+        Array.from(list.querySelectorAll('.layer-item')).forEach(n => n.remove());
+
+        if (this.elements.length === 0) {
+            if (empty) empty.style.display = '';
+            return;
+        }
+        if (empty) empty.style.display = 'none';
+
+        // Render in reverse order (top layer first)
+        [...this.elements].reverse().forEach((el, i) => {
+            const icon = el.type === 'text' ? '✍️' : el.type === 'image' ? '🖼️' : el.type === 'circle' ? '⚪' : '⬜';
+            const item = document.createElement('div');
+            item.className = 'layer-item' + (el === this.selectedElement ? ' active' : '');
+            item.innerHTML = `
+                <span class="layer-icon">${icon}</span>
+                <span class="layer-name" title="${el.name || el.type}">${el.name || el.type}</span>
+                <button class="layer-del" title="Delete" data-idx="${i}">✕</button>
+            `;
+            item.addEventListener('click', (e) => {
+                if (e.target.classList.contains('layer-del')) return;
+                this.selectedElement = el;
+                // bring to front
+                const idx = this.elements.indexOf(el);
+                if (idx !== -1) {
+                    this.elements.splice(idx, 1);
+                    this.elements.push(el);
+                }
+                this.render();
+                this.updateUI();
+                this.updateLayers();
+            });
+            item.querySelector('.layer-del').addEventListener('click', () => {
+                this.selectedElement = el;
+                this.deleteSelected();
+            });
+            list.insertBefore(item, list.querySelector('.layer-item') ? list.querySelector('.layer-item') : null);
+            list.appendChild(item);
+        });
     }
 
     updateUI() {
         const tools = document.getElementById('selection-tools');
         const propPanel = document.getElementById('properties-panel');
-        
+        if (!tools || !propPanel) return;
+
         if (this.selectedElement) {
             tools.style.display = 'block';
             propPanel.style.display = 'block';
-            
-            // Populate Properties
+
             const el = this.selectedElement;
             const propContent = document.getElementById('prop-content');
-            
+
             if (el.type === 'text') {
                 propContent.innerHTML = `
-                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Content</label>
-                    <input type="text" id="prop-text" value="${el.content}" style="width:100%; margin-bottom:1rem; padding:0.4rem;">
-                    
-                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Color</label>
-                    <input type="color" id="prop-color" value="${el.color}" style="width:100%; height:30px; margin-bottom:1rem;">
-                    
-                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Size</label>
-                    <input type="range" id="prop-size" value="${el.size}" min="10" max="200" style="width:100%;">
+                    <div style="margin-bottom:0.6rem;">
+                        <label style="display:block;margin-bottom:0.3rem;font-size:0.78rem;font-weight:600;color:var(--text-muted)">CONTENT</label>
+                        <input type="text" id="prop-text" value="${el.content.replace(/"/g,'&quot;')}" />
+                    </div>
+                    <div style="margin-bottom:0.6rem;display:flex;gap:0.5rem;align-items:center;">
+                        <div style="flex:1;">
+                            <label style="display:block;margin-bottom:0.3rem;font-size:0.78rem;font-weight:600;color:var(--text-muted)">COLOR</label>
+                            <input type="color" id="prop-color" value="${el.color}" style="width:100%;height:32px;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;" />
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display:block;margin-bottom:0.3rem;font-size:0.78rem;font-weight:600;color:var(--text-muted)">SIZE: <span id="size-val">${el.size}px</span></label>
+                        <input type="range" id="prop-size" value="${el.size}" min="8" max="200" style="width:100%;" />
+                    </div>
                 `;
-                
-                // Bind Events
-                document.getElementById('prop-text').addEventListener('input', (e) => {
-                    el.content = e.target.value;
-                    this.render();
-                    this.saveState();
-                });
-                document.getElementById('prop-color').addEventListener('input', (e) => {
-                    el.color = e.target.value;
-                    this.render();
-                });
-                document.getElementById('prop-size').addEventListener('input', (e) => {
-                    el.size = parseInt(e.target.value);
-                    this.render();
-                });
-                
-            } else if (el.type === 'rect' || el.type === 'circle') {
-                 propContent.innerHTML = `
-                    <label style="display:block; margin-bottom:0.5rem; font-size:0.8rem">Fill Color</label>
-                    <input type="color" id="prop-color" value="${el.color}" style="width:100%; height:30px; margin-bottom:1rem;">
-                `;
-                 document.getElementById('prop-color').addEventListener('input', (e) => {
-                    el.color = e.target.value;
-                    this.render();
-                    this.saveState();
-                });
-            } else {
-                propContent.innerHTML = '<p style="color:#64748b; font-size:0.8rem;">Image properties not available</p>';
-            }
+                document.getElementById('prop-text').addEventListener('input', (e) => { el.content = e.target.value; this.render(); this.saveState(); });
+                document.getElementById('prop-color').addEventListener('input', (e) => { el.color = e.target.value; this.render(); });
+                document.getElementById('prop-size').addEventListener('input', (e) => { el.size = parseInt(e.target.value); document.getElementById('size-val').textContent = e.target.value + 'px'; this.render(); });
 
+            } else if (el.type === 'rect' || el.type === 'circle') {
+                propContent.innerHTML = `
+                    <div>
+                        <label style="display:block;margin-bottom:0.3rem;font-size:0.78rem;font-weight:600;color:var(--text-muted)">FILL COLOR</label>
+                        <input type="color" id="prop-color" value="${el.color}" style="width:100%;height:36px;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;" />
+                    </div>
+                `;
+                document.getElementById('prop-color').addEventListener('input', (e) => { el.color = e.target.value; this.render(); this.saveState(); });
+            } else {
+                propContent.innerHTML = '<p style="font-size:0.82rem;color:var(--text-muted);">Select image to adjust position via drag.</p>';
+            }
         } else {
             tools.style.display = 'none';
             propPanel.style.display = 'none';
@@ -280,11 +329,11 @@ class LabelEditor {
             }
 
             const clickedIndex = this.elements.slice().reverse().findIndex(el => this.isHit(pos, el));
-            
+
             if (clickedIndex !== -1) {
                 const actualIndex = this.elements.length - 1 - clickedIndex;
                 this.selectedElement = this.elements[actualIndex];
-                
+
                 // Bring to front
                 this.elements.splice(actualIndex, 1);
                 this.elements.push(this.selectedElement);
@@ -297,6 +346,7 @@ class LabelEditor {
             }
             this.render();
             this.updateUI();
+            this.updateLayers();
         });
 
         // Mouse Move
@@ -329,11 +379,12 @@ class LabelEditor {
 
         // Mouse Up
         this.canvas.addEventListener('mouseup', () => {
-            if(this.isDragging || this.isResizing) {
+            if (this.isDragging || this.isResizing) {
                 this.isDragging = false;
                 this.isResizing = false;
                 this.resizeHandle = null;
-                this.saveState(); 
+                this.saveState();
+                this.updateLayers();
             }
         });
         

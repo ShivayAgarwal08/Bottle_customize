@@ -1,91 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AquaLabel - Design Your Water Bottle Labels</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      (function () {
-        const storedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        }
-      })();
-    </script>
-  </head>
-  <body>
-    <header class="hero">
-      <div class="container">
-        <h1>
-          Design Your Own<br /><span style="color: var(--primary)"
-            >Water Bottle Labels</span
-          >
-        </h1>
-        <p>
-          Create professional, custom labels for events, brands, or personal use
-          in minutes. No design skills required.
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquaLabel — Design Beautiful Water Bottle Labels</title>
+  <meta name="description" content="AquaLabel lets you create stunning custom water bottle labels in minutes. Drag-and-drop editor, rich templates, and instant PNG export. No design skills required." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      const t = localStorage.getItem("theme");
+      const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (t === "dark" || (!t && d)) document.documentElement.setAttribute("data-theme", "dark");
+    })();
+  </script>
+</head>
+<body>
+  <!-- NAVBAR rendered by main.js -->
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+
+    <div class="container">
+      <div class="hero-badge">✨ Now with Layers & Live Preview</div>
+
+      <h1>
+        Design Beautiful<br />
+        <span class="highlight">Water Bottle Labels</span>
+      </h1>
+
+      <p class="hero-desc">
+        From corporate events to wedding favours — create professional,
+        print-ready labels in minutes. Drag, drop, customize, and export.
+        Zero design skills required.
+      </p>
+
+      <div class="hero-cta">
+        <a href="design.html" class="btn btn-primary btn-lg">
+          🎨 Start Designing Free
+        </a>
+        <a href="community.html" class="btn btn-outline btn-lg">
+          🌐 Browse Community
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">10k+</div>
+          <div class="hero-stat-label">Labels Created</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">4.9 ★</div>
+          <div class="hero-stat-label">User Rating</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">100%</div>
+          <div class="hero-stat-label">Free to Use</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-value">PNG/PDF</div>
+          <div class="hero-stat-label">Export Formats</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── FEATURES ── -->
+  <section class="container section-pad">
+    <div class="section-header">
+      <div class="section-tag">Why AquaLabel?</div>
+      <h2>Everything You Need to Create<br /><span class="text-gradient">Stunning Labels</span></h2>
+      <p>A complete design toolkit built specifically for water bottle labels. Fast, powerful, and beautiful.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card" style="animation-delay: 0.05s;">
+        <div class="feature-icon-wrap">🎨</div>
+        <h3>Drag-and-Drop Editor</h3>
+        <p>Intuitive canvas editor with layers, resize handles, and full element control — like a mini Figma for labels.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.12s;">
+        <div class="feature-icon-wrap">✍️</div>
+        <h3>Rich Typography</h3>
+        <p>Choose from multiple fonts, sizes, and colors. Add text anywhere on your label with a single click.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.19s;">
+        <div class="feature-icon-wrap">🖼️</div>
+        <h3>Logo & Image Upload</h3>
+        <p>Upload your own logo, photos, or decorative icons. Drag from desktop — it just works.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.26s;">
+        <div class="feature-icon-wrap">🔍</div>
+        <h3>Live 3D Preview</h3>
+        <p>See exactly how your label wraps around a bottle before exporting. No surprises at the printer.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.33s;">
+        <div class="feature-icon-wrap">🖨️</div>
+        <h3>Print-Ready Export</h3>
+        <p>Export crisp, high-quality PNG files ready for professional printing or sharing digitally.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.40s;">
+        <div class="feature-icon-wrap">🌐</div>
+        <h3>Community Designs</h3>
+        <p>Browse hundreds of community-created templates. Like, remix, and make them your own instantly.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.47s;">
+        <div class="feature-icon-wrap">💾</div>
+        <h3>Auto-Save Projects</h3>
+        <p>Your designs are automatically saved in your browser. Pick up right where you left off, anytime.</p>
+      </div>
+      <div class="feature-card" style="animation-delay: 0.54s;">
+        <div class="feature-icon-wrap">🌙</div>
+        <h3>Dark & Light Mode</h3>
+        <p>Comfortable to use any time of day. Automatically respects your system preference.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section style="background: var(--glass-bg); backdrop-filter: blur(12px); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container section-pad">
+      <div class="section-header">
+        <div class="section-tag">Simple Process</div>
+        <h2>Label-Ready in <span class="text-gradient">3 Easy Steps</span></h2>
+        <p>No tutorials needed — just jump in and create something amazing.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card" style="animation-delay: 0.05s;">
+          <div class="step-number">1</div>
+          <h3>Choose Your Size</h3>
+          <p>Select from 250ml, 500ml, 1L, or custom dimensions to perfectly fit your bottle.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.15s;">
+          <div class="step-number">2</div>
+          <h3>Design Your Label</h3>
+          <p>Add text, shapes, logos, and colors using the intuitive drag-and-drop canvas editor.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.25s;">
+          <div class="step-number">3</div>
+          <h3>Export & Print</h3>
+          <p>Preview on a 3D bottle, then export a high-quality PNG perfect for professional printing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="container section-pad" style="text-align: center;">
+    <div style="background: var(--gradient-primary); border-radius: var(--radius-xl); padding: 4rem 2rem; position: relative; overflow: hidden; box-shadow: var(--shadow-xl);">
+      <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 60% 50%, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+      <div style="position: relative; z-index: 1;">
+        <h2 style="font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 900; color: white; letter-spacing: -0.03em; margin-bottom: 1rem;">
+          Ready to Create Your First Label?
+        </h2>
+        <p style="color: rgba(255,255,255,0.80); font-size: 1.05rem; max-width: 480px; margin: 0 auto 2rem;">
+          Join thousands of designers, event planners, and brands who trust AquaLabel.
         </p>
-        <div style="display: flex; gap: 1rem; justify-content: center">
-          <a href="design.html" class="btn btn-primary">Start Designing</a>
-          <a href="signup.html" class="btn btn-outline">Create Account</a>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="design.html" class="btn btn-lg" style="background: white; color: var(--primary); font-weight: 700;">
+            🎨 Start Designing Now
+          </a>
+          <a href="signup.html" class="btn btn-lg" style="background: rgba(255,255,255,0.15); color: white; border: 1.5px solid rgba(255,255,255,0.35); backdrop-filter: blur(8px);">
+            Create Free Account
+          </a>
         </div>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <section class="container">
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🎨</div>
-          <h3>Easy Design</h3>
-          <p>Drag and drop editor with hundreds of templates and assets.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">✨</div>
-          <h3>Customize</h3>
-          <p>Upload your logo, choose colors, and add custom text instantly.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🖨️</div>
-          <h3>Print Ready</h3>
-          <p>
-            Export high-quality PNGs or PDFs ready for professional printing.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🌐</div>
-          <h3>Community</h3>
-          <p>Share your designs and get inspired by other creators.</p>
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <span class="footer-logo">💧 AquaLabel</span>
+        <p>© 2024 AquaLabel Platform. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="community.html">Community</a>
+          <a href="design.html">Editor</a>
+          <a href="signup.html">Sign Up</a>
         </div>
       </div>
-    </section>
+    </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer
-      style="
-        background-color: white;
-        border-top: 1px solid var(--border);
-        padding: 2rem 0;
-        margin-top: auto;
-      "
-    >
-      <div
-        class="container"
-        style="text-align: center; color: var(--text-muted)"
-      >
-        <p>&copy; 2024 AquaLabel Platform. All rights reserved.</p>
-      </div>
-    </footer>
+  <script src="js/main.js"></script>
 
-    <script src="js/main.js"></script>
-  </body>
+  <!-- Scroll-reveal animation for cards -->
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.feature-card, .step-card').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(32px)';
+      el.style.transition = `opacity 0.6s ease ${i * 0.07}s, transform 0.6s ease ${i * 0.07}s`;
+      observer.observe(el);
+    });
+  </script>
+</body>
 </html>
