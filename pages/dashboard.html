@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — AquaLabel</title>
   <meta name="description" content="Your AquaLabel dashboard — track stats, manage designs, and jump straight into creating." />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script>
     (function () {
@@ -18,13 +18,11 @@
 <body>
 
   <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
-    <!-- Header -->
     <div class="dashboard-header">
       <h1 id="welcome-msg">Welcome Back! 👋</h1>
       <p>Here's what's happening with your label designs.</p>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card" style="animation-delay: 0.05s;">
         <div class="stat-icon">🎨</div>
@@ -56,7 +54,6 @@
       </div>
     </div>
 
-    <!-- Quick Actions -->
     <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-heading); letter-spacing: -0.02em; margin-bottom: 1.25rem;">
       Quick Actions
     </h2>
@@ -84,8 +81,8 @@
     </div>
   </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const user = window.App.Data.getUser();
@@ -94,8 +91,6 @@
         document.getElementById("stat-created").textContent = user.stats.created;
         document.getElementById("stat-printed").textContent = user.stats.printed;
       }
-
-      // Scroll-reveal
       const observer = new IntersectionObserver(
         (entries) => entries.forEach(e => {
           if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; observer.unobserve(e.target); }

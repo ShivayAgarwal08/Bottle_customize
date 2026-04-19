@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Label Editor — AquaLabel</title>
-  <meta name="description" content="Design custom water bottle labels with the AquaLabel drag-and-drop editor. Add text, shapes, images, and export in seconds." />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="description" content="Design custom water bottle labels with the AquaLabel drag-and-drop editor." />
+  <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script>
     (function () {
@@ -27,7 +27,6 @@
         <h2>🎨 Label Editor</h2>
       </div>
 
-      <!-- Action Buttons -->
       <div class="tool-group">
         <h3>Actions</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
@@ -37,7 +36,6 @@
         </div>
       </div>
 
-      <!-- Canvas Size -->
       <div class="tool-group">
         <h3>Label Size</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
@@ -48,27 +46,23 @@
         </div>
       </div>
 
-      <!-- Add Elements -->
       <div class="tool-group">
         <h3>Add Elements</h3>
         <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-ghost btn-sm" id="add-rect-btn" title="Add Rectangle" style="flex:1; font-size: 1rem;">⬜ Rect</button>
-          <button class="btn btn-ghost btn-sm" id="add-circle-btn" title="Add Circle" style="flex:1; font-size: 1rem;">⚪ Circle</button>
+          <button class="btn btn-ghost btn-sm" id="add-rect-btn" title="Add Rectangle" style="flex:1;">⬜ Rect</button>
+          <button class="btn btn-ghost btn-sm" id="add-circle-btn" title="Add Circle" style="flex:1;">⚪ Circle</button>
         </div>
       </div>
 
-      <!-- Background Color -->
       <div class="tool-group">
         <h3>Background Color</h3>
         <div class="color-picker-wrapper" id="bg-colors"></div>
         <input type="color" id="custom-bg-color" style="width: 100%; height: 36px; margin-top: 0.6rem; cursor: pointer; border-radius: var(--radius-xs); border: 1.5px solid var(--border); background: none;" title="Custom Color" />
       </div>
 
-      <!-- Text Tools -->
       <div class="tool-group">
         <h3>Text Tools</h3>
         <input type="text" id="text-input" placeholder="Enter label text…" style="margin-bottom: 0.5rem;" />
-
         <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
           <select id="font-family" style="flex: 2;">
             <option value="Outfit, sans-serif">Outfit</option>
@@ -79,40 +73,35 @@
           </select>
           <input type="number" id="text-size" value="24" min="8" max="200" style="width: 62px;" />
         </div>
-
         <div style="display: flex; gap: 0.5rem; align-items: center;">
           <input type="color" id="text-color" value="#111827" style="height: 36px; width: 44px; padding: 2px; border: 1.5px solid var(--border); border-radius: var(--radius-xs); cursor: pointer; flex-shrink: 0;" />
           <button class="btn btn-primary btn-sm" id="add-text-btn" style="flex: 1;">+ Add Text</button>
         </div>
       </div>
 
-      <!-- Image Upload -->
       <div class="tool-group">
         <h3>Images</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upload or drag & drop from desktop</p>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upload or drag &amp; drop from desktop</p>
         <label class="btn btn-outline btn-sm" style="width: 100%; cursor: pointer; justify-content: center;">
           📁 Upload Image / Logo
           <input type="file" id="image-upload" accept="image/*" style="display: none;" />
         </label>
       </div>
 
-      <!-- Properties Panel -->
       <div id="properties-panel" class="tool-group" style="display: none;">
         <h3>Properties</h3>
         <div id="prop-content"></div>
       </div>
 
-      <!-- Selection Tools & Export -->
       <div class="tool-group" style="margin-top: auto;">
         <div id="selection-tools" style="display: none; margin-bottom: 1rem;">
           <h3>Selection</h3>
           <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <button class="btn btn-ghost btn-sm" onclick="editor.moveLayer('up')" style="flex:1;" title="Move layer forward">⬆ Front</button>
-            <button class="btn btn-ghost btn-sm" onclick="editor.moveLayer('down')" style="flex:1;" title="Move layer back">⬇ Back</button>
+            <button class="btn btn-ghost btn-sm" onclick="editor.moveLayer('up')" style="flex:1;">⬆ Front</button>
+            <button class="btn btn-ghost btn-sm" onclick="editor.moveLayer('down')" style="flex:1;">⬇ Back</button>
           </div>
           <button class="btn btn-sm" id="delete-el-btn" style="width:100%; background: hsla(0,72%,58%,0.1); color: var(--danger); border: 1px solid hsla(0,72%,58%,0.2);">🗑️ Remove Element</button>
         </div>
-
         <button class="btn btn-sm" id="preview-btn" style="width: 100%; margin-bottom: 0.5rem; background: linear-gradient(135deg, hsl(270,75%,65%), hsl(244,82%,62%)); color: white;">
           👓 Preview on Bottle
         </button>
@@ -136,7 +125,6 @@
           No layers yet.<br/>Add text or shapes to start.
         </p>
       </div>
-
       <div style="border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: 0.75rem;">
         <p style="font-size: 0.75rem; color: var(--text-faint); text-align: center;">
           Click a layer to select.<br/>Drag elements on canvas to reorder.
@@ -165,8 +153,8 @@
     </div>
   </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/editor.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/editor.js"></script>
 </body>
 </html>

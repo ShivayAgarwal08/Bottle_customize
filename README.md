@@ -164,13 +164,15 @@ npx serve .
 ```
 📦 BOTTLE CUSTOMIZE/
 ├── 📄 index.html             # Landing page
-├── 📄 login.html             # Auth — Sign In
-├── 📄 signup.html            # Auth — Sign Up
-├── 📄 dashboard.html         # User dashboard
-├── 📄 design.html            # Canvas label editor
-├── 📄 saved-designs.html     # Saved designs gallery
-├── 📄 community.html         # Community gallery
-├── 📄 profile.html           # Profile & preferences
+│
+├── 📁 pages/                 # All Application Pages
+│   ├── 📄 login.html         # Auth — Sign In
+│   ├── 📄 signup.html        # Auth — Sign Up
+│   ├── 📄 dashboard.html     # User dashboard
+│   ├── 📄 design.html        # Canvas label editor
+│   ├── 📄 saved-designs.html # Saved designs gallery
+│   ├── 📄 community.html     # Community gallery
+│   └── 📄 profile.html       # Profile & preferences
 │
 ├── 📁 css/
 │   └── style.css             # Complete design system (single file)

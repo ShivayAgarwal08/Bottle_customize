@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Community — AquaLabel</title>
   <meta name="description" content="Discover community-created water bottle label designs. Browse, like, and use as templates." />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script>
     (function () {
@@ -18,13 +18,11 @@
 <body>
 
   <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
-    <!-- Header -->
     <div class="dashboard-header">
       <h1>Community Designs 🌐</h1>
       <p>Get inspired by what others are creating. Use any design as a template.</p>
     </div>
 
-    <!-- Filter Tabs -->
     <div id="category-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
       <button class="btn btn-primary btn-sm filter-tab" data-cat="all">All</button>
       <button class="btn btn-ghost btn-sm filter-tab" data-cat="floral">🌸 Floral</button>
@@ -33,29 +31,21 @@
       <button class="btn btn-ghost btn-sm filter-tab" data-cat="glacier">❄️ Glacier</button>
     </div>
 
-    <!-- Grid -->
     <div class="designs-grid" id="community-list"></div>
   </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
   <script>
-    const categoryMap = {
-      101: 'floral', 102: 'eco', 103: 'glacier', 104: 'minimal'
-    };
+    const categoryMap = { 101: 'floral', 102: 'eco', 103: 'glacier', 104: 'minimal' };
     const likes = {};
 
     document.addEventListener("DOMContentLoaded", () => {
       renderCommunity('all');
-
       document.querySelectorAll('.filter-tab').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.filter-tab').forEach(b => {
-            b.classList.remove('btn-primary');
-            b.classList.add('btn-ghost');
-          });
-          btn.classList.add('btn-primary');
-          btn.classList.remove('btn-ghost');
+          document.querySelectorAll('.filter-tab').forEach(b => { b.classList.remove('btn-primary'); b.classList.add('btn-ghost'); });
+          btn.classList.add('btn-primary'); btn.classList.remove('btn-ghost');
           renderCommunity(btn.dataset.cat);
         });
       });
@@ -67,14 +57,13 @@
       grid.innerHTML = "";
 
       const filtered = cat === 'all' ? designs : designs.filter(d => categoryMap[d.id] === cat);
-
       filtered.forEach((design, i) => {
         if (!likes[design.id]) likes[design.id] = design.likes;
-
         const card = document.createElement("div");
         card.className = "design-card";
         card.style.animationDelay = `${i * 0.07}s`;
 
+        const catLabel = (categoryMap[design.id] || 'design');
         card.innerHTML = `
           <div class="design-preview">
             <img src="${design.preview}" alt="Design by ${design.designer}" />
@@ -86,7 +75,7 @@
                 ❤️ <span id="like-count-${design.id}">${likes[design.id]}</span>
               </button>
             </div>
-            <p class="design-meta">🏷️ ${(categoryMap[design.id] || 'design').charAt(0).toUpperCase() + (categoryMap[design.id] || 'design').slice(1)}</p>
+            <p class="design-meta">🏷️ ${catLabel.charAt(0).toUpperCase() + catLabel.slice(1)}</p>
             <div class="design-actions" style="margin-top:0.75rem;">
               <button class="btn btn-primary btn-sm" style="width:100%;" onclick="window.location.href='design.html?template=${design.id}'">
                 🎨 Use as Template
@@ -97,7 +86,6 @@
         grid.appendChild(card);
       });
 
-      // Scroll reveal
       const observer = new IntersectionObserver(
         entries => entries.forEach(e => {
           if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; observer.unobserve(e.target); }
@@ -105,8 +93,7 @@
         { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
       );
       grid.querySelectorAll('.design-card').forEach((el, i) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(24px)';
+        el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
         el.style.transition = `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`;
         observer.observe(el);
       });

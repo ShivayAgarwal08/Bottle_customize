@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile — AquaLabel</title>
   <meta name="description" content="View and manage your AquaLabel profile, stats, and account details." />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script>
     (function () {
@@ -19,7 +19,6 @@
 
   <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem; max-width: 700px;">
 
-    <!-- Profile Header Card -->
     <div class="profile-header-card">
       <div class="profile-avatar" id="p-avatar">?</div>
       <div class="profile-info">
@@ -29,7 +28,6 @@
       </div>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid" style="margin-bottom: 2rem;">
       <div class="stat-card" style="animation-delay:0.05s;">
         <div class="stat-icon">🎨</div>
@@ -54,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Preferences Card -->
     <div style="background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-md);">
       <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-heading); margin-bottom: 1.5rem; letter-spacing: -0.02em;">Account &amp; Preferences</h3>
 
@@ -86,8 +83,8 @@
     </div>
   </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const user = window.App.Data.getUser();
@@ -100,13 +97,10 @@
         document.getElementById("p-created").textContent = user.stats.created;
         document.getElementById("p-printed").textContent = user.stats.printed;
       }
-
       document.getElementById("profile-theme-toggle").addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme");
-        const next = current === "dark" ? null : "dark";
-        if (next) document.documentElement.setAttribute("data-theme", "dark");
-        else document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("theme", next || "light");
+        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+        if (isDark) { document.documentElement.removeAttribute("data-theme"); localStorage.setItem("theme", "light"); }
+        else { document.documentElement.setAttribute("data-theme", "dark"); localStorage.setItem("theme", "dark"); }
         window.App.showToast("Theme switched!", "info");
       });
     });
